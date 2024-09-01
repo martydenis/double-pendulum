@@ -1,3 +1,5 @@
+import { dpi, hexToRGB } from './sandbox-utils/utilities.js';
+
 // Variables
 const canvas = document.getElementById('canvas');
 const canvasLine = document.getElementById('canvas-line');
@@ -79,7 +81,7 @@ gui.add(buttons, 'toggle').name('Pause/Play');
 
 
 // Functions
-function calculateBobs() {
+function calculateBobs(delta) {
   const g = pendulum.gravity / 3;
 
   let num1 = -g * (2 * b1.mass + b2.mass) * Math.sin(b1.angle);
@@ -96,8 +98,8 @@ function calculateBobs() {
   den = b2.dist * (2 * b1.mass + b2.mass - b2.mass * Math.cos(2 * b1.angle - 2 * b2.angle));
   b2.acc = (num1 * (num2 + num3 + num4)) / den;
 
-  b1.vel += b1.acc;
-  b2.vel += b2.acc;
+  b1.vel += b1.acc * delta;
+  b2.vel += b2.acc * delta;
   b1.angle += b1.vel;
   b2.angle += b2.vel;
 
@@ -161,17 +163,29 @@ function drawPendulum(x, y) {
   line.y = b2.y + y;
 }
 
-function updateGameLogic() {
+let oldTime = new Date();
+let newTime = new Date();
+function updateGame() {
+    newTime = new Date();
+    const delta = (newTime - oldTime) * 0.025;
+
+    updateLogic(delta);
+    updateVisuals();
+
+    oldTime = new Date();
+    requestAnimationFrame(updateGame);
+}
+
+function updateLogic(delta) {
   if (pendulum.playing) {
-    calculateBobs();
+    calculateBobs(delta);
   }
 }
 
-function updateGameDisplay() {
+function updateVisuals() {
   if (pendulum.playing) {
     ctx.clearRect(0, 0, dpi(innerWidth), dpi(innerHeight));
     drawPendulum(innerWidth / 2, innerHeight / 2);
-    requestAnimationFrame(updateGameDisplay);
   }
 }
 
@@ -186,10 +200,7 @@ function resizeWindow() {
 
 
 // Initializations
-let gameLogicInterval = new AdjustingInterval(updateGameLogic, INTERVAL);
-gameLogicInterval.start();
-updateGameDisplay();
-
+updateGame();
 resizeWindow();
 
 // Event Listeners
@@ -203,8 +214,4 @@ canvas.addEventListener('click', function () {
   } else {
     gui.close();
   }
-});
-
-document.getElementById('back').addEventListener('click', function(e) {
-  e.stopPropagation();
 });
