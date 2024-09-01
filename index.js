@@ -5,7 +5,6 @@ const canvas = document.getElementById('canvas');
 const canvasLine = document.getElementById('canvas-line');
 const ctx = canvas.getContext('2d');
 const ctxLine = canvasLine.getContext('2d');
-const FPS = 60;
 const gui = new dat.GUI({
     closeOnTop: true,
     width: 320,
