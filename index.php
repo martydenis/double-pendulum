@@ -11,15 +11,14 @@
         <link rel="stylesheet" type="text/css" href="./index.css" media="screen" />
         <title>Double Pendulum</title>
     </head>
+    <body id="double-pendulum">
+        <canvas id="canvas" width="400" height="400"></canvas>
+        <canvas id="canvas-line" width="400" height="400"></canvas>
 
-  <body id="double-pendulum">
-    <canvas id="canvas" width="400" height="400"></canvas>
-    <canvas id="canvas-line" width="400" height="400"></canvas>
+        <button>Reset Canvas</button>
 
-    <button>Reset Canvas</button>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script>
-    <script type="module" src="./index.js"></script>
-  </body>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script>
+        <script type="module" src="./index.js"></script>
+    </body>
 </html>
